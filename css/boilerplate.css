@@ -1,0 +1,288 @@
+html {
+  height                   : 100%;
+  font-size                : 100%;
+  -webkit-text-size-adjust : 100%;
+  -moz-text-size-adjust    : 100%;
+  -ms-text-size-adjust     : 100%;
+}
+
+body {
+  min-height : 100%;
+  margin     : 0;
+}
+
+body * {
+  outline : none;
+}
+
+#viewDiv {
+  height     : 500px;
+  margin     : 0;
+  padding    : 0;
+  box-shadow : 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+#user-thumb-node {
+  height         : 36px;
+  border-radius  : 18px;
+  vertical-align : middle;
+}
+
+#legend-node {
+  padding : 10px;
+}
+
+.esri-search__input {
+  height : 32px !important;
+}
+
+.esri-layer-list {
+  background-color : #fff;
+  width            : unset;
+  max-height       : unset;
+}
+
+.esri-layer-list li {
+  margin : 3px !important;
+}
+
+.esri-layer-list__item-action {
+  /*margin : 3px !important;*/
+  /*vertical-align : middle !important;*/
+}
+
+.esri-layer-list__item-action-icon {
+  height         : 100%;
+  vertical-align : middle !important;
+}
+
+.esri-print__container {
+  max-height : unset;
+}
+
+/* =========================================================== */
+
+.toggle-pane-node {
+  cursor     : pointer;
+  padding    : 8px;
+  background : #fff;
+  box-shadow : 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-pane-node:hover {
+  color : #0079c1;
+}
+
+/* =========================================================== */
+
+.places-node {
+  cursor     : pointer;
+  margin     : 5px;
+  padding    : 10px;
+  text-align : center;
+  border     : solid 1px transparent;
+}
+
+.places-node:hover {
+  border-color : #999;
+}
+
+.places-node:active {
+  color        : #0079c1;
+  border-color : #0079c1;
+}
+
+.places-node.selected {
+  color        : #0079c1;
+  background   : #d2e9f9;
+  border-color : #0079c1;
+}
+
+.places-thumbnail {
+  box-shadow : 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================================== */
+
+.date-label-cell {
+  width : 80px;
+}
+
+#timeline-table {
+  table-layout : fixed;
+}
+
+#name-header-cell {
+  width : 200px;
+}
+
+#timeline-header-cell {
+  /*width : 100%;*/
+}
+
+#status-header-cell {
+  width : 80px;
+}
+
+.timeline-bar {
+  cursor       : pointer;
+  background   : #0079c1;
+  height       : 1.55rem;
+  border-right : solid 2px darkorange;
+  border-left  : solid 2px darkorange;
+}
+
+.timeline-bar:hover {
+  background : #3cb6ff;
+}
+
+.timeline-bar:active {
+  background : #0079c1;
+}
+
+.disabled > * {
+  cursor         : default;
+  pointer-events : none;
+  color          : #ddd !important;
+}
+
+.disabled .timeline-bar {
+  background-color : #ddd;
+  border-color     : #7F7269;
+}
+
+#timeline-date-cell {
+
+}
+
+#timeline-date-bars {
+  position : relative;
+  top      : -36px;
+}
+
+.timeline-date-bar {
+  z-index    : 99;
+  position   : absolute;
+  cursor     : pointer;
+  width      : 4px;
+  height     : 22px;
+  background : #fff;
+  border     : solid 1px #07385a;
+  box-shadow : 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.timeline-date-bar:hover {
+  background   : darkorange;
+  border-color : #fff;
+}
+
+#timeline-range-input {
+  z-index : 98;
+}
+
+/* http://danielstern.ca/range.css */
+input[type=range] {
+  -webkit-appearance : none;
+  width              : 100%;
+  margin             : 6px 0;
+  background         : transparent;
+  outline            : none !important;
+  border             : none !important;
+  box-shadow         : none !important;
+}
+
+input[type=range]:hover {
+  z-index : 100;
+}
+
+input[type=range]:focus {
+  outline : none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width         : 100%;
+  height        : 6px;
+  cursor        : pointer;
+  box-shadow    : 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background    : #0079c1;
+  border-radius : 1px;
+  border        : 1px solid #004e81;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  box-shadow         : 1px 1px 1px #814200, 0px 0px 1px #9b4f00;
+  border             : 1.9px solid #ff8c00;
+  height             : 44px;
+  width              : 10px;
+  border-radius      : 3px;
+  background         : #ffffff;
+  cursor             : pointer;
+  -webkit-appearance : none;
+  margin-top         : -20px;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background : #0089db;
+}
+
+input[type=range]::-moz-range-track {
+  width         : 100%;
+  height        : 6px;
+  cursor        : pointer;
+  box-shadow    : 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background    : #0079c1;
+  border-radius : 1px;
+  border        : 1px solid #004e81;
+}
+
+input[type=range]::-moz-range-thumb {
+  box-shadow    : 1px 1px 1px #814200, 0px 0px 1px #9b4f00;
+  border        : 1.9px solid #ff8c00;
+  height        : 44px;
+  width         : 10px;
+  border-radius : 3px;
+  background    : #ffffff;
+  cursor        : pointer;
+}
+
+input[type=range]::-ms-track {
+  width        : 100%;
+  height       : 6px;
+  cursor       : pointer;
+  background   : transparent;
+  border-color : transparent;
+  color        : transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+  background    : #0069a8;
+  border        : 1px solid #004e81;
+  border-radius : 2px;
+  box-shadow    : 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type=range]::-ms-fill-upper {
+  background    : #0079c1;
+  border        : 1px solid #004e81;
+  border-radius : 2px;
+  box-shadow    : 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type=range]::-ms-thumb {
+  box-shadow    : 1px 1px 1px #814200, 0px 0px 1px #9b4f00;
+  border        : 1.9px solid #ff8c00;
+  height        : 44px;
+  width         : 10px;
+  border-radius : 3px;
+  background    : #ffffff;
+  cursor        : pointer;
+  height        : 6px;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+  background : #0079c1;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+  background : #0089db;
+}

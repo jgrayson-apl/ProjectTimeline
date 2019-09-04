@@ -44,6 +44,7 @@ define([
   "esri/widgets/Compass",
   "esri/widgets/BasemapGallery",
   "esri/widgets/Expand",
+  "dojo/NodeList-dom",
   "dojo/domReady!"
 ], function (ItemHelper, UrlParamHelper, i18n, declare, lang, array, number, date, query, on,
              dom, domAttr, domClass, domGeom, domConstruct, ConfirmDialog,
@@ -144,7 +145,7 @@ define([
         require(["esri/views/MapView"], function (MapView) {
 
           let view = new MapView(viewProperties);
-          view.then(function (response) {
+          view.when().then(function () {
             this.urlParamHelper.addToView(view, this.config);
             this._ready(view);
           }.bind(this), this.reportError);
@@ -174,7 +175,7 @@ define([
         require(["esri/views/SceneView"], function (SceneView) {
 
           let view = new SceneView(viewProperties);
-          view.then(function (response) {
+          view.when().then(function () {
             this.urlParamHelper.addToView(view, this.config);
             this._ready(view);
           }.bind(this), this.reportError);
@@ -499,22 +500,24 @@ define([
 
     },
 
-
     /**
-     *
-     * @param view
-     * @param featureLayer
-     * @returns {Promise}
-     */
-    whenAllFeaturesLoaded: function (view, featureLayer) {
-      return view.whenLayerView(featureLayer).then(function (featureLayerView) {
-        return watchUtils.whenOnce(featureLayerView, "controller").then(function (result) {
-          const activeController = (view.type === "3d") ? result.value : result.value.activeController;
-          return watchUtils.whenTrueOnce(activeController, "hasAllFeatures").then(function () {
-            return activeController;
-          }.bind(this));
-        }.bind(this));
-      }.bind(this));
+      * UPDATE UI ELEMENTS BASED ON FEATURE OID VISIBLE
+      *
+      * @param layer
+      * @param projectLocationFeatures
+      * @returns {Promise}
+      */
+    updateProjectTimelines: function(layer, projectLocationFeatures) {
+      return layer.queryObjectIds().then(function(currentIds) {
+        projectLocationFeatures.forEach((graphic) => {
+          const objectId = graphic.attributes[layer.objectIdField];
+          if (currentIds.indexOf(objectId) < 0) {
+            query(lang.replace("[data-oid='{0}']", [objectId])).addClass("disabled");
+          } else {
+            query(lang.replace("[data-oid='{0}']", [objectId])).removeClass("disabled");
+          }
+        });
+      });
     },
 
     /**
@@ -526,26 +529,16 @@ define([
       const projectLocationsLayer = view.map.allLayers.find(layer => {
         return (layer.title === "Project Locations");
       });
-      this.whenAllFeaturesLoaded(view, projectLocationsLayer).then(function (activeController) {
-
+      projectLocationsLayer.queryFeatures().then(function (queryResult) {
+        let projectLocationFeatures = queryResult.features;
         const projectLayerObjectIdField = projectLocationsLayer.objectIdField;
 
-        this.displayProjectPopup = this._displayProjectPopup(activeController, projectLayerObjectIdField);
+        this.displayProjectPopup = this._displayProjectPopup(projectLocationFeatures, projectLayerObjectIdField);
         this.addProjectToList = this._addProjectToList(projectLayerObjectIdField);
 
-        // UPDATE UI ELEMENTS BASED ON FEATURE OID VISIBLE //
-        activeController.graphics.on("change", changes => {
-          changes.removed.forEach(feature => {
-            const oid = feature.getAttribute(projectLayerObjectIdField);
-            query(lang.replace("[data-oid={0}]", [oid])).addClass("disabled");
-          });
-          changes.added.forEach(feature => {
-            const oid = feature.getAttribute(projectLayerObjectIdField);
-            query(lang.replace("[data-oid={0}]", [oid])).removeClass("disabled");
-          });
-        });
+        var update = promiseUtils.debounce(this.updateProjectTimelines.bind(this, projectLocationsLayer, projectLocationFeatures));
+        watchUtils.watch(projectLocationsLayer, "definitionExpression", update);
 
-        let projectLocationFeatures = activeController.graphics;
         if(projectLocationFeatures.length > 0) {
 
           // SORT BASED ON START DATE //
@@ -778,9 +771,9 @@ define([
       }
     },
 
-    _displayProjectPopup: function (activeController, objectIdField) {
+    _displayProjectPopup: function (projectLocationFeatures, objectIdField) {
       return function (view, projectFeature) {
-        const projectFeatureInLayer = activeController.graphics.find(feature => {
+        const projectFeatureInLayer = projectLocationFeatures.find(feature => {
           return (feature.getAttribute(objectIdField) === projectFeature.getAttribute(objectIdField));
         });
         if(projectFeatureInLayer) {
